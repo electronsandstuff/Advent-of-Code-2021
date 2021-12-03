@@ -7,7 +7,7 @@ def n_increase(arr):
 
 if __name__ == '__main__':
     # Read the puzzle input
-    with open('in.txt') as f:
+    with open('input.txt') as f:
         pin = f.readlines()
     depths = np.array([int(x.strip()) for x in pin])
 
