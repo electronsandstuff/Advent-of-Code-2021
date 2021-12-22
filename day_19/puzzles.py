@@ -4,6 +4,12 @@ from functools import lru_cache
 
 
 def read_probes(path):
+    """
+    Reads probes from files and returns list of numpy arrays where each numpy array is (m, n) and contains the m
+    observations of n-dimensional probes.
+    :param path: path to the file containing probe info
+    :return: list of numpy arrays as described above
+    """
     with open(path) as f:
         probes = []
         for l in f.readlines():
@@ -59,6 +65,15 @@ def find_transformation(a, b, min_points=12):
 
 
 def find_pairwise_transformations(probes, max_iter=64):
+    """
+    Given a list of sets of beacons from the perspective of different probes returns the list of lists where the element
+    r[i][j] is the transformation that maps probe j's coordinate system to probe i's.  This transformation is the tuple
+    r, t where r is a rotation matrix and t is a translation vector.  This method may fail with an exception if there
+    are isolated patches of beacons that cannot be linked together.
+    :param probes: list of np.array's. each array is (m, n) and represents m observed beacons in n-dimensional space
+    :param max_iter: Max iterations in the transformation completion method before failing
+    :return: list of lists where elements are as described in body of docstring
+    """
     ts = [[None for _ in probes] for _ in probes]
     for i in range(len(probes)):
         ts[i][i] = np.identity(3), np.zeros(3)
